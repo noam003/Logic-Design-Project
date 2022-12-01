@@ -6,12 +6,12 @@
 module timer(toggle, reset, clk, disp_time);
     
     input toggle, reset, clk;
-    output reg [23:0] disp_time;
+    output reg [26:0] disp_time;
     
     reg [4:0] hr = 0;
     reg [5:0] min = 0;
     reg [5:0] sec = 0;
-    reg [6:0] ms = 0;
+    reg [9:0] ms = 0;
     
     always @ (posedge reset) begin
         // reset timer to starting point
@@ -19,7 +19,7 @@ module timer(toggle, reset, clk, disp_time);
             hr <= 5'b10111;
             min <= 6'b111011;
             sec <= 6'b111011;
-            ms <= 7'b1100100;
+            ms <= 10'b1111101000;
         end
     end
     
@@ -31,9 +31,9 @@ module timer(toggle, reset, clk, disp_time);
     end
     
     always @ (*) begin
-        // if we count 100ms, decrement the second
+        // if we count 1000ms, decrement the second
         if (ms == 0) begin
-            ms <= 7'b1100100;
+            ms <= 10'b1111101000;
             sec <= sec - 1'b1;
         end
         else if (sec == 0) begin
