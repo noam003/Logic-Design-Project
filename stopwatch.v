@@ -1,35 +1,16 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 12/01/2022 03:35:20 PM
-// Design Name: 
-// Module Name: stopwatch
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
 //Verilog Stopwatch  -- SUHANI MITRA
 module stopwatch(clk, reset, toggle, disp_time);
     input clk, reset, toggle;
-    output reg [23:0] disp_time;
+    output reg [26:0] disp_time;
     
     //toggle value: 0 = stop, 1 = start
     
     reg [4:0] h = 0;
     reg [5:0] m = 0;
     reg [5:0] s = 0;
-    reg [6:0] ms = 0;
+    reg [9:0] ms = 0;
     
     //asynchronous reset
     always @ (posedge reset) begin 
@@ -49,7 +30,7 @@ module stopwatch(clk, reset, toggle, disp_time);
     
     //accounts for fall over bits, i.e. when s = 60, add 1 to m
     always @ (*) begin
-        if (ms == 7'b1100100) begin
+        if (ms == 10'b1111101000) begin
             ms <= 0;
             s <= s + 'b1;
         end
