@@ -26,38 +26,42 @@ module stopwatch(clk, reset, toggle, disp_time);
     
     //toggle value: 0 = stop, 1 = start
     
-    reg [5:0] h = 0;
+    reg [4:0] h = 0;
     reg [5:0] m = 0;
     reg [5:0] s = 0;
     reg [6:0] ms = 0;
     
-    always @ (posedge clk or posedge reset) begin
+    //asynchronous reset
+    always @ (posedge reset) begin 
         if (reset) begin
             ms <= 0;
             s <= 0;
             m <= 0;
             h <= 0;
         end
-        else begin
-            if (toggle)
+    end
+    
+    always @ (posedge clk or posedge reset) begin
+        if (toggle) begin
                 ms <= ms +1'b1;
         end
     end
     
+    //accounts for fall over bits, i.e. when s = 60, add 1 to m
     always @ (*) begin
-        if (ms == 100) begin
+        if (ms == 7'b1100100) begin
             ms <= 0;
             s <= s + 'b1;
         end
-        else if (s == 60) begin
+        else if (s == 'b111100) begin
             s <= 0;
             m <= m + 1'b1;
         end
-        else if (m == 60) begin
+        else if (m == 6'b111100) begin
             m <= 0;
             h <= h +1'b1;
         end
-        else if (h == 24) begin       //reset everything, max value
+        else if (h == 5'b11000) begin       //reset everything, max value
             ms <= 0;
             s <= 0;
             m <= 0;
