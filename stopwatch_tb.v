@@ -33,11 +33,11 @@ module stopwatch_tb;
         toggle <= 1;
     end
     
-    always #0.5 reset = 0;
-    always #1 clk = ~clk;
-    always #100 toggle = ~toggle;
+    always #0.01 reset = 0;
+    always #0.1 clk = ~clk;
+    //always #100 toggle = ~toggle;
     always #900 reset = 1;
     
-    always #1000 $stop;
+    always #1700 $stop;
     
 endmodule
