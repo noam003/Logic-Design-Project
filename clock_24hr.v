@@ -33,7 +33,7 @@ module clock_24hr(kh_clk, reset, disp_time);
                         min <= 0;
                         hr <= hr + 1; // increment hr
                         if (hr == 23) begin
-                            hr = 0;
+                            hr <= 0;
                         end
                     end
                 end
