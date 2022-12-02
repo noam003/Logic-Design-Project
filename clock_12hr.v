@@ -23,7 +23,7 @@ module clock_12hr(kh_clk, reset, disp_time);
             ms <= 0;
         end else if (kh_clk == 1) begin
             ms <= ms + 1; // increment ms
-            if (ms == 59) begin
+            if (ms == 999) begin
                 ms <= 0;
                 sec <= sec +1 ; // increment s
                 if (sec == 59) begin
