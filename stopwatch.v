@@ -34,7 +34,7 @@ module stopwatch(clk, reset, toggle, disp_time);
             ms <= 0;
             s <= s + 'b1;
         end
-        else if (s == 'b111100) begin
+        else if (s == 6'b111100) begin
             s <= 0;
             m <= m + 1'b1;
         end
