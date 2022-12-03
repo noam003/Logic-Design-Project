@@ -23,7 +23,7 @@
 module stopwatch_tb;
     
     reg clk, reset, toggle;
-    wire [23:0] disp_time;
+    wire [27:0] disp_time;
     
     stopwatch S0(.clk(clk), .reset(reset), .toggle(toggle), .disp_time(disp_time));
     
