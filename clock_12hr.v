@@ -15,6 +15,9 @@ module clock_12hr(kh_clk, reset, disp_time);
     reg [5:0] sec = 0;
     reg [9:0] ms = 0;
     
+    
+    //use the switch buttons to act as a 16 bit wide binary input number
+    //maybe one switch multiplies the #??
     always @ (posedge kh_clk or posedge reset) begin
         if (reset) begin
             hr <= 0;
