@@ -32,15 +32,18 @@ module stopwatch(clk, reset, toggle, disp_time);
     always @ (*) begin
         if (ms == 10'b1111101000) begin
             ms <= 0;
-            s <= s + 'b1;
+            s <= s + 1'b1;
         end
         else if (s == 6'b111100) begin
+            ms <= 0;
             s <= 0;
             m <= m + 1'b1;
         end
         else if (m == 6'b111100) begin
+            ms <= 0;
+            s <= 0;
             m <= 0;
-            h <= h +1'b1;
+            h <= h + 1'b1;
         end
         else if (h == 5'b11000) begin       //reset everything, max value
             ms <= 0;
