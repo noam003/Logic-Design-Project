@@ -1,11 +1,15 @@
 `timescale 1 ns / 1ps
 
-// Last Modified 12/7/2022 by Laura
+// Last Modified 12/8/2022 by Laura
 // timer starts at 01:59:59:99
 // count down timer
-module timer(toggle, reset, clk, out_time);
+module timer(toggle, ms_i, sec_i, min_i, hr_i, reset, clk, out_time);
     
     input toggle, reset, clk;
+    input [9:0] ms_i;
+    input [5:0] sec_i;
+    input [5:0] min_i;
+    input [4:0] hr_i;
     output reg [26:0] out_time;
     reg [26:0] disp_time;
     
@@ -17,10 +21,10 @@ module timer(toggle, reset, clk, out_time);
     always @ (posedge reset) begin
         // reset timer to starting point
         if (reset) begin
-            hr <= 5'b00001;
-            min <= 6'b111011;
-            sec <= 6'b111011;
-            ms <= 10'b1111101000;
+            hr <= hr_i;
+            min <= min_i;
+            sec <= sec_i;
+            ms <= ms_i;
         end
     end
     
