@@ -6,6 +6,8 @@ module timer_top(toggle, reset, clk, add_one, add_ten, ms_sw, s_sw, min_sw, hr_s
     input toggle, reset, clk, add_one, add_ten, ms_sw, s_sw, min_sw, hr_sw;
     output [26:0] out_time;
     wire [26:0] start_time;
+    wire inc;
+    wire [1:0] add_type;
     wire [9:0] ms;
     wire [5:0] sec;
     wire [5:0] min;
@@ -15,12 +17,18 @@ module timer_top(toggle, reset, clk, add_one, add_ten, ms_sw, s_sw, min_sw, hr_s
                     .reset(reset),
                     .button_in_one(add_one),
                     .button_in_ten(add_ten),
-                    .button_out(start_time));
+                    .toggle(toggle),
+                    .button_out(inc),
+                    .button_type(add_type));
+                    
+    count_out CO (.button_in(add_type),
+                  .out(start_time));
     
     user_entry UE (.ms_sw(ms_sw),
                     .s_sw(s_sw),
                     .min_sw(min_sw),
                     .hr_sw(hr_sw),
+                    .toggle(toggle),
                     .add_time(start_time),
                     .ms_o(ms),
                     .sec_o(sec),
