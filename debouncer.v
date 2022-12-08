@@ -3,12 +3,13 @@ module debouncer(
     input resetn,
     input button_in_one,
     input button_in_ten,
-    output reg [7:0] button_out
+    input toggle,
+    output reg button_out,
+    output reg [1:0] button_type
     );
     
     reg output_exist;
     reg [19:0] deb_count;
-    reg [26:0] out_count;
     
     parameter MAX = 100;
     reg max_count_flag;
@@ -19,23 +20,25 @@ module debouncer(
             output_exist <= 0; 
             button_out <= 0;
         end else begin 
-            if (button_in_one || button_in_ten) begin
+            if (!toggle && (button_in_one || button_in_ten)) begin
                 deb_count <= deb_count + 1;
                 
-                if (button_in_one)
-                    out_count <= out_count + 1'b1;
-                if (button_in_ten)
-                    out_count <= out_count + 4'b1010;
+                
              
                 if ((deb_count == MAX) && (max_count_flag == 0)) begin
-                    button_out <= 1;
+                    button_out <= 1'b1;
                     deb_count <= deb_count; 
                     output_exist <= 1;
                     max_count_flag <= 1;
+                    
+                    if (button_in_one)
+                        button_type <= 2'b01;
+                    if (button_in_ten)
+                        button_type <= 2'b10;
                 end
                 
                 if (output_exist) begin
-                    button_out <= out_count;
+                    button_out <= 1'b0;
                     output_exist <= 0;
                 end 
             
