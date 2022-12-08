@@ -1,7 +1,6 @@
 `timescale 1 ns / 1ps
 
 // Last Modified 12/8/2022 by Laura
-// timer starts at 01:59:59:99
 // count down timer
 module timer(toggle, ms_i, sec_i, min_i, hr_i, reset, clk, out_time);
     
