@@ -5,19 +5,23 @@
 // Module Name: clock_12hr
 // Additional Comments: Basically same design as 24 Hour clock, just increments at hr 12
 
-module clock_12hr(kh_clk, reset, disp_time);
+module clock_12hr(kh_clk, spring_szn, reset, disp_time);
 
-    input kh_clk, reset;
-    output reg [23:0] disp_time;
+    input kh_clk, spring_szn, reset;
+    output reg [26:0] disp_time;
     
     reg [4:0] hr = 0;
     reg [5:0] min = 0;
     reg [5:0] sec = 0;
     reg [9:0] ms = 0;
     
+   always @ (spring_szn) begin
+        if (spring_szn)
+            hr = hr + 1;
+        else 
+            hr = hr - 1;
+   end
     
-    //use the switch buttons to act as a 16 bit wide binary input number
-    //maybe one switch multiplies the #??
     always @ (posedge kh_clk or posedge reset) begin
         if (reset) begin
             hr <= 0;
@@ -45,4 +49,3 @@ module clock_12hr(kh_clk, reset, disp_time);
        disp_time <= {hr,min,sec,ms};   
     end
 endmodule
-
