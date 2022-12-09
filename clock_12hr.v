@@ -41,7 +41,7 @@ module clock_12hr(kh_clk, spring_szn, reset, disp_time);
            end
        end
        case (spring_szn)
-            0: hr <= hr + 1;
+            0: hr <= hr;
             1: hr <= hr - 1;
       endcase
       disp_time <= {hr,min,sec,ms};   
