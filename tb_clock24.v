@@ -7,7 +7,7 @@ module tb_clock24();
     reg clk;
     reg spring_szn;
     reg reset;
-    wire [23:0] disp_time;
+    wire [26:0] disp_time;
     
     clock_24hr digital_clock24(.kh_clk(clk), .spring_szn(spring_szn), .reset(reset), .disp_time(disp_time));
     
