@@ -42,9 +42,10 @@ module top(clk, reset, toggle, add_one, add_ten, select_nonDB, spring_szn, ms_sw
     stopwatch s0(.clk(khz_clk), .reset(reset), .toggle(toggle), .disp_time(stopwatch_out));
   
     // assign select = 2'b00;
+    //mux_4to1 mux(.in1(stopwatch_out), .in2(time_24hr), .in3(timer_out), .in4(time_12hr), .select(select), .mux_out(mux_out));
     mux_4to1 mux(.in1(time_12hr), .in2(time_24hr), .in3(timer_out), .in4(stopwatch_out), .select(select), .mux_out(mux_out));
         
-    binary_to_bcd msBCD(.bin(mux_out[9:4]), .bcd(ms_bcd));
+    binary_to_bcd msBCD(.bin(mux_out[9:3]), .bcd(ms_bcd));
     binary_to_bcd secBCD(.bin(mux_out[15:10]), .bcd(sec_bcd));
     binary_to_bcd minBCD(.bin(mux_out[21:16]), .bcd(min_bcd)); 
     binary_to_bcd hrBCD(.bin(mux_out[26:22]), .bcd(hr_bcd));  
