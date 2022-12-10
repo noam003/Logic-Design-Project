@@ -8,7 +8,7 @@ module counter(select_in, reset, count);
     end 
                          
     always @ (posedge select_in or posedge reset) begin
-        if (!reset) begin
+        if (reset) begin
             count <= 0;
         end else begin
             if (select_in == 1) begin
