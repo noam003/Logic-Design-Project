@@ -15,7 +15,7 @@ module debouncer_select(clock,reset, button_in, button_out);
         button_out = 1'b0;
     end
     always @ (posedge clock, posedge reset) begin
-        if (!reset) begin
+        if (reset) begin
            deb_count <= 0;
             output_exists <= 1'b0;
             button_out <= 1'b0;
