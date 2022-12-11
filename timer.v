@@ -1,6 +1,6 @@
 `timescale 1 ns / 1ps
 
-// Last Modified 12/8/2022 by Laura
+// Last Modified 12/11/2022 by Laura
 // count down timer
 module timer(toggle, ms_i, sec_i, min_i, hr_i, reset, clk, out_time);
     
@@ -11,6 +11,7 @@ module timer(toggle, ms_i, sec_i, min_i, hr_i, reset, clk, out_time);
     input [4:0] hr_i;
     output reg [26:0] out_time;
     reg [26:0] disp_time;
+    reg [26:0] timer_on;
     reg [4:0] hr = 0;
     reg [5:0] min = 0;
     reg [5:0] sec = 0;
@@ -18,25 +19,27 @@ module timer(toggle, ms_i, sec_i, min_i, hr_i, reset, clk, out_time);
 
     
     always @ (posedge clk or posedge reset) begin
-        if (reset || !toggle) begin
+        if (reset) begin
             hr <= hr_i;
             min <= min_i;
             sec <= sec_i;
             ms <= ms_i;
             out_time <= {hr, min, sec, ms};
+            timer_on <= 0;
         end
         // while the timer is not set to stop, keep counting
        // if we count 1000ms, decrement the second
         else  if (toggle) begin
-        
             disp_time = {hr, min, sec, ms};
             if (toggle && (disp_time != 0)) begin
                 ms = ms - 1'b1;
                 disp_time = {hr, min, sec, ms};
                 out_time = disp_time;
+                timer_on = 1;
             end
             else if (disp_time == 0) begin
                 out_time = 0;
+                timer_on = 0;
             end
             
             if ((ms == 10'b1111111111) && (out_time != 0)) begin
@@ -52,7 +55,23 @@ module timer(toggle, ms_i, sec_i, min_i, hr_i, reset, clk, out_time);
                 end
             end
 
-        end 
+        end
+        
+        else if (!toggle) begin
+            if (timer_on) begin
+                disp_time <= {hr, min, sec, ms};
+                out_time <= disp_time;
+            end
+            else begin
+                hr <= hr_i;
+                min <= min_i;
+                sec <= sec_i;
+                ms <= ms_i;
+                disp_time <= {hr, min, sec, ms};
+                out_time <= disp_time;
+            end
+
+        end
     end
-    
+
 endmodule
