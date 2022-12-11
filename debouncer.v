@@ -8,7 +8,7 @@ module debouncer(
     reg output_exist;
     reg [19:0] deb_count;
     
-    parameter MAX = 10;
+    parameter MAX = 100;
     reg max_count_flag;
     
     always @ (posedge clk) begin
