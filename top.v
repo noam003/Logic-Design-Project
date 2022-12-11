@@ -1,23 +1,4 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 12/08/2022 03:49:39 PM
-// Design Name: 
-// Module Name: top
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
 
 module top(clk, reset, toggle, add_one, add_ten, select_nonDB, spring_szn, ms_sw, sec_sw, min_sw, hr_sw, VGA_HS, VGA_VS, VGA_R, VGA_G, VGA_B);
@@ -40,15 +21,15 @@ module top(clk, reset, toggle, add_one, add_ten, select_nonDB, spring_szn, ms_sw
     
     clock_divider_khz khzClk(.clk_i(clk), .clk_o(khz_clk));
     
-    clock_12hr clk12(.kh_clk(khz_clk), .spring_szn(up), .reset(reset), .disp_time(time_12hr_temp));
-    clock_24hr clk24(.kh_clk(khz_clk), .spring_szn(up), .reset(reset), .disp_time(time_24hr));
-    timer_top t0(.toggle(toggle), .reset(reset), .clk(khz_clk), .add_one(add_one), .add_ten(add_ten), .ms_sw(ms_sw), .s_sw(sec_sw), .min_sw(min_sw), .hr_sw(hr_sw), .out_time(timer_out));
+    clock_12hr clk12(.kh_clk(khz_clk), .spring_szn(spring_szn), .reset(reset), .disp_time(time_12hr_temp));
+    clock_24hr clk24(.kh_clk(khz_clk), .spring_szn(spring_szn), .reset(reset), .disp_time(time_24hr));
+    timer_top t0(.toggle(toggle), .reset(reset), .clk_khz(khz_clk), .clk(clk), .add_one(add_one), .add_ten(add_ten), .ms_sw(ms_sw), .s_sw(sec_sw), .min_sw(min_sw), .hr_sw(hr_sw), .out_time(timer_out));
     stopwatch s0(.clk(khz_clk), .reset(reset), .toggle(toggle), .disp_time(stopwatch_out));
   
     twelve_converter TC(.clk(khz_clk), .time_in(time_12hr_temp), .time_out(time_12hr));
   
     // assign select = 2'b00;
-    mux_4to1 mux(.in1(time_12hr), .in2(time_24hr), .in3(stopwatch_out), .in4(stopwatch_out), .select(select), .mux_out(mux_out));
+    mux_4to1 mux(.in1(time_12hr), .in2(time_24hr), .in3(stopwatch_out), .in4(timer_out), .select(select), .mux_out(mux_out));
         
     binary_to_bcd msBCD(.bin(mux_out[9:3]), .bcd(ms_bcd));
     binary_to_bcd secBCD(.bin(mux_out[15:10]), .bcd(sec_bcd));
