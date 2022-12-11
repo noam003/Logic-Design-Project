@@ -11,7 +11,6 @@ module timer(toggle, ms_i, sec_i, min_i, hr_i, reset, clk, out_time);
     input [4:0] hr_i;
     output reg [26:0] out_time;
     reg [26:0] disp_time;
-    
     reg [4:0] hr = 0;
     reg [5:0] min = 0;
     reg [5:0] sec = 0;
@@ -19,45 +18,41 @@ module timer(toggle, ms_i, sec_i, min_i, hr_i, reset, clk, out_time);
 
     
     always @ (posedge clk or posedge reset) begin
-        if (reset) begin
+        if (reset || !toggle) begin
             hr <= hr_i;
             min <= min_i;
             sec <= sec_i;
             ms <= ms_i;
+            out_time <= {hr, min, sec, ms};
         end
         // while the timer is not set to stop, keep counting
        // if we count 1000ms, decrement the second
-        else begin
-            if ((ms == 0) && (out_time != 0)) begin
-                ms <= 10'b1111101000;
-                sec <= sec - 1'b1;
+        else  if (toggle) begin
+        
+            disp_time = {hr, min, sec, ms};
+            if (toggle && (disp_time != 0)) begin
+                ms = ms - 1'b1;
+                disp_time = {hr, min, sec, ms};
+                out_time = disp_time;
             end
-            else if ((sec == 0) &&(out_time != 0)) begin
-                sec <= 6'b111011;
-                min <= min - 1'b1;
-            end
-            else if ((min == 0) &&(out_time != 0)) begin
-                min <= 6'b111011;
-                hr <= hr - 1'b1;
-            end
-            else if ((hr == 0)) begin 
-                // stop the timer
-                ms <= 0;
-                sec <= 0;
-                min <= 0;
-                hr <= 0;
+            else if (disp_time == 0) begin
+                out_time = 0;
             end
             
-            if (toggle && (disp_time != 27'b000010000010000010000000001)) begin
-                ms <= ms - 1'b1;
-                out_time <= disp_time;
+            if ((ms == 10'b1111111111) && (out_time != 0)) begin
+                sec = sec - 1'b1;
+                ms = 10'b1111100111;
+                if ((sec == 6'b111111) && (out_time != 0)) begin
+                    sec = 6'b111011;
+                    min = min - 1'b1;
+                    if ((min == 6'b111111) && (out_time != 0)) begin
+                        min = 6'b111011;
+                        hr = hr - 1'b1;
+                    end
+                end
             end
-            else if (disp_time == 27'b000010000010000010000000001) begin
-                out_time <= 0;
-            end
-            
-            disp_time <= {hr, min, sec, ms};
-        end
+
+        end 
     end
     
 endmodule
