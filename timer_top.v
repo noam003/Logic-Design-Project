@@ -7,29 +7,35 @@ module timer_top(toggle, reset, clk, add_one, add_ten, ms_sw, s_sw, min_sw, hr_s
     output [26:0] out_time;
     wire [26:0] start_time;
     wire inc;
-    wire [1:0] add_type;
+    reg [1:0] button_type;
     wire [9:0] ms;
     wire [5:0] sec;
     wire [5:0] min;
     wire [4:0] hr;
+    reg button_in;
     
     debouncer DB (.clk(clk),
                     .reset(reset),
-                    .button_in_one(add_one),
-                    .button_in_ten(add_ten),
-                    .toggle(toggle),
-                    .button_out(inc),
-                    .button_type(add_type));
+                    .button_in(button_in),
+                    .button_out(inc));
                     
-    count_out CO (.button_in(add_type),
+    count_out CO (.button_in(inc),
+                  .button_type(button_type),
+                  .ms_sw(ms_sw),
+                  .s_sw(s_sw),
+                  .min_sw(min_sw),
+                  .hr_sw(hr_sw),
+                  .reset(reset),
+                  .clk(clk),
                   .out(start_time));
     
     user_entry UE (.ms_sw(ms_sw),
                     .s_sw(s_sw),
                     .min_sw(min_sw),
                     .hr_sw(hr_sw),
-                    .toggle(toggle),
                     .add_time(start_time),
+                    .clk(clk),
+                    .reset(reset),
                     .ms_o(ms),
                     .sec_o(sec),
                     .min_o(min),
@@ -43,5 +49,20 @@ module timer_top(toggle, reset, clk, add_one, add_ten, ms_sw, s_sw, min_sw, hr_s
               .reset(reset),
               .clk(clk),
               .out_time(out_time));
+              
+    always @ (posedge clk or posedge reset) begin
+        if (add_one) begin
+            button_in = add_one;
+            button_type = 2'b01;
+        end
+        else if (add_ten) begin
+            button_in = add_ten;
+            button_type = 2'b10;
+        end
+        else begin
+            button_in = 0;
+            button_type = 2'b00;
+        end
+    end
                     
 endmodule
