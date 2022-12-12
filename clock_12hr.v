@@ -9,11 +9,13 @@ module clock_12hr(kh_clk, spring_szn, reset, disp_time);
 
     input kh_clk, spring_szn, reset;
     output reg [26:0] disp_time;
+    reg [4:0] hr_reg;
     
     reg [4:0] hr = 0;
     reg [5:0] min = 0;
     reg [5:0] sec = 0;
     reg [9:0] ms = 0;
+    reg szn_change;
     
     
     always @ (posedge kh_clk or posedge reset) begin
@@ -22,6 +24,7 @@ module clock_12hr(kh_clk, spring_szn, reset, disp_time);
             min <= 0;
             sec <= 0;
             ms <= 0;
+            szn_change <= spring_szn;
         end else if (kh_clk == 1) begin
             ms <= ms + 1; // increment ms
             if (ms == 999) begin
@@ -40,11 +43,29 @@ module clock_12hr(kh_clk, spring_szn, reset, disp_time);
                 end
            end
        end
-       case (spring_szn)
-            0: hr <= hr;
-            1: hr <= hr - 1;
-      endcase
-      disp_time <= {hr,min,sec,ms};   
+      hr <= hr_reg;
+      disp_time <= {hr,min,sec,ms};  
+      szn_change <= spring_szn; 
     end
+    
+    always @ (*) begin
+        case (spring_szn)
+            0: begin if (spring_szn == szn_change) begin
+                hr_reg = hr;
+                end else if (hr == 11) begin
+                    hr_reg = 0;
+                    end else begin 
+                        hr_reg = hr + 1;
+                    end
+                end
+            1:  begin if (spring_szn == szn_change) begin
+                hr_reg = hr;
+                end else if (hr == 0) begin
+                    hr_reg = 11;
+                    end else begin 
+                        hr_reg = hr - 1;
+                    end
+                end
+       endcase
+   end
 endmodule
-
