@@ -1,26 +1,22 @@
 `timescale 1ns / 1ps
+
+// Company: 
 // Engineer: Noa Margolin
-// Module Name: clock_24hr
-// Description: Behavioral verilog Digita Ckock that increments every millisecond
-// Additional Comments: 1 khz = 1 ms, therefore we input the kh_clk; using active high rst
-// spring_season to enable day light adding, off for day light savings
+// Module Name: clock_12hr
+// Additional Comments: Basically same design as 24 Hour clock, just increments at hr 12
 
 module clock_24hr(kh_clk, spring_szn, reset, disp_time);
 
     input kh_clk, spring_szn, reset;
     output reg [26:0] disp_time;
-    reg [4:0] hr;
-    reg [5:0] min;
-    reg [5:0] sec;
-    reg [9:0] ms;
+    reg [4:0] hr_reg;
     
-    initial begin
-        hr = 0;
-        min = 0;
-        sec = 0;
-        ms = 0;
-    end
-
+    reg [4:0] hr = 0;
+    reg [5:0] min = 0;
+    reg [5:0] sec = 0;
+    reg [9:0] ms = 0;
+    reg szn_change;
+    
     
     always @ (posedge kh_clk or posedge reset) begin
         if (reset) begin
@@ -28,6 +24,7 @@ module clock_24hr(kh_clk, spring_szn, reset, disp_time);
             min <= 0;
             sec <= 0;
             ms <= 0;
+            szn_change <= spring_szn;
         end else if (kh_clk == 1) begin
             ms <= ms + 1; // increment ms
             if (ms == 999) begin
@@ -45,12 +42,30 @@ module clock_24hr(kh_clk, spring_szn, reset, disp_time);
                     end
                 end
            end
-        end
-        case (spring_szn)
-            0: hr <= hr;
-            1: hr <= hr - 1;
-       endcase
-       disp_time <= {hr,min,sec,ms};   
+       end
+      hr <= hr_reg;
+      disp_time <= {hr,min,sec,ms};  
+      szn_change <= spring_szn; 
     end
-
+    
+    always @ (*) begin
+        case (spring_szn)
+            0: begin if (spring_szn == szn_change) begin
+                hr_reg = hr;
+                end else if (hr == 23) begin
+                    hr_reg = 0;
+                    end else begin 
+                        hr_reg = hr + 1;
+                    end
+                end
+            1:  begin if (spring_szn == szn_change) begin
+                hr_reg = hr;
+                end else if (hr == 0) begin
+                    hr_reg = 23;
+                    end else begin 
+                        hr_reg = hr - 1;
+                    end
+                end
+       endcase
+   end
 endmodule
