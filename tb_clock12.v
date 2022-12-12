@@ -16,15 +16,12 @@ module tb_clock12( );
     
     initial begin 
         clk = 0;
-        spring_szn = 0;
+        spring_szn = 1;
+        reset = 0;
     end
 
     always #1 clk = ~clk;
+    always #20 spring_szn = ~spring_szn;
     
-    initial begin
-        reset = 1;
-        #3 reset = 0;
-        #5000 spring_szn = ~spring_szn;
-        #6000 spring_szn = ~spring_szn;
-    end
+
 endmodule
