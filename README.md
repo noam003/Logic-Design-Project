@@ -6,7 +6,6 @@
 [Design Specifications](#design-specifications "Goto design-specifications")\
 [24 Hour Clock Specifications](#24-hour-clock-specifications "24-hour-clock-specifications")\
 [Stopwatch and Timer](#stopwatch-and-timer "Goto stopwatch-and-timer")\
-[Screenshots](#Screenshots "Goto screenshots")\
 [Authors](#Authors "Goto authors")
 
 ## Design Specifications
@@ -30,7 +29,6 @@ Stopwatch:
 - at the posedge of the clk (kHz)
 - increment ms
 - then, before ms reg hits max (1000), increment seconds and reset ms / all less significant bits
-- etc etc for each one
 - reset
 
 Timer:
@@ -40,13 +38,9 @@ Similar to the stopwatch it decrements the ms at every posedge of the clock.
 After each decrement we check if the ms reached zero, then we decrement the second and reset the ms to 1000. 
 Same thing with the second and minutes, and minutes and hours. 
 
-
-
-## Screenshots
-
-**Search for events and add them to your calendar straight from the app:**
-![App Screenshot](https://images4.imagebam.com/a6/7f/78/MEBH0JE_o.png)
-
-**Can't find anything? No worries! Stay home and play Snake:**
-
 ## Authors
+
+- [@noam003](https://www.github.com/noam003) [noam@bu.edu]
+- [@suhanimitra](https://github.com/suhanimitra) [suhanim@bu.edu]
+- [@lraiff](https://github.com/lraiff) [lraiff@bu.edu]
+- [@ktscott](https://github.com/ktscott) [ktscott@bu.edu]
