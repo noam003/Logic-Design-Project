@@ -10,9 +10,9 @@
 [Authors](#Authors "Goto authors")
 
 ## Design Specifications
-- internal clock→ faster since we’re incrementing/decrementing the milliseconds bit
+- internal clock → faster since we’re incrementing/decrementing the milliseconds bit
 - reset → active high for all modes
-- to select bw these modes, we use two buttons to act as each bit of the select line (since 4:1 mux needs a 2 bit select line)
+- to select between these modes, we use two buttons to act as each bit of the select line (since 4:1 mux needs a 2 bit select line)
 - use the high/low combination of each to represent each mode
 - switch → high = start, low = stop
 - finally, output: 27 bits, stores 4 internal registers (hr, min, sec, ms)
