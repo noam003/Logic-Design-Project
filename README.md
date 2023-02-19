@@ -6,6 +6,7 @@
 [Design Specifications](#design-specifications "Goto design-specifications")\
 [24 Hour Clock Specifications](#24-hour-clock-specifications "24-hour-clock-specifications")\
 [Stopwatch and Timer](#stopwatch-and-timer "Goto stopwatch-and-timer")\
+[Screenshots](#screenshots "Goto screenshots")\
 [Authors](#Authors "Goto authors")
 
 ## Design Specifications
@@ -38,6 +39,10 @@ Similar to the stopwatch it decrements the ms at every posedge of the clock.
 After each decrement we check if the ms reached zero, then we decrement the second and reset the ms to 1000. 
 Same thing with the second and minutes, and minutes and hours. 
 
+## Screenshots
+
+![](clock.png)
+![](stopwatch.png)
 ![](timer.png)
 
 ## Authors
