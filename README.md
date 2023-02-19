@@ -38,6 +38,8 @@ Similar to the stopwatch it decrements the ms at every posedge of the clock.
 After each decrement we check if the ms reached zero, then we decrement the second and reset the ms to 1000. 
 Same thing with the second and minutes, and minutes and hours. 
 
+![](timer.png)
+
 ## Authors
 
 - [@noam003](https://www.github.com/noam003) [noam@bu.edu]
