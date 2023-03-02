@@ -41,6 +41,7 @@ Same thing with the second and minutes, and minutes and hours.
 
 ## Screenshots
 
+![](top_schematic.png)
 ![](clock.png)
 ![](stopwatch.png)
 ![](timer.png)
