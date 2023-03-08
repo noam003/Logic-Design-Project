@@ -1,5 +1,5 @@
 
-# Logic Design Project
+# Logic Design Project ⏚⎍
 
 #### A digital clock that has a stop watch, timer, and uses a computer monitor to display your clock. We will provide the code for connecting the FPGA to the monitor via the VGA port. The user has the flexibility on how they want to display the digital clock on the monitor. ####
 **Contents:**\
